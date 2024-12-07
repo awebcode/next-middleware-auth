@@ -16,6 +16,7 @@ export default function MobileNav() {
   const {user}=useUserStore()
    const navItems = [
      { name: "Sign In", href: "/sign-in", visible: !user },
+     { name: "About", href: "/about", visible: true },
      { name: "Profile", href: "/profile", visible: !!user },
      { name: "Dashboard", href: "/dashboard", visible: user?.role === "ADMIN" },
    ];

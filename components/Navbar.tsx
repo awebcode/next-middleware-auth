@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/hooks/useUser";
 import { useEffect } from "react";
-import type { User } from "@prisma/client";
+import { ROLE, type User } from "@prisma/client";
 import MobileNav from "./MobileNav";
 
 export default function Navbar({ data }: { data: User | null }) {
@@ -22,7 +22,7 @@ export default function Navbar({ data }: { data: User | null }) {
     { name: "Sign In", href: "/sign-in", visible: !user },
     { name: "About", href: "/about", visible: true },
     { name: "Profile", href: "/profile", visible: !!user },
-    { name: "Dashboard", href: "/dashboard", visible: user?.role === "ADMIN" },
+    { name: "Dashboard", href: "/dashboard", visible: user?.role === ROLE.ADMIN },
   ];
 
   return (

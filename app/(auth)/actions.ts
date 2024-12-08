@@ -15,7 +15,6 @@ type SignInDataType = z.infer<typeof SignInSchema>;
 
 export async function SignInAction(prev: unknown, formData: FormData) {
   const data = Object.fromEntries(formData) as unknown as SignInDataType;
-  console.log({ data });
   const parsed = SignInSchema.safeParse(data);
 
   if (!parsed.success) {

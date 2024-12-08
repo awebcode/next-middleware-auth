@@ -3,26 +3,30 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getCookie } from "./lib/server_utils";
 
-const PUBLIC_ROUTES = ["/sign-in", "/about"];
+const LOGIN_ROUTES = ["/sign-in", "/sign-up"];
+const PROTECTED_ROUTES = ["/profile", "/dashboard"];
 const ADMIN_ROUTES = ["/dashboard"];
 
 export async function middleware(req: NextRequest) {
   const token = await getCookie("auth_token");
   const urlPath = req.nextUrl.pathname;
+  
 
   // Redirect unauthenticated users from protected routes
-  if (!token && !PUBLIC_ROUTES.includes(urlPath)) {
+  if (!token && PROTECTED_ROUTES.includes(urlPath)) {
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 
-  // Redirect authenticated users away from public routes
-  if (token && PUBLIC_ROUTES.includes(urlPath)) {
+  // Redirect authenticated users from login routes
+
+  if(token && LOGIN_ROUTES.includes(urlPath)) {
     return NextResponse.redirect(new URL("/profile", req.url));
   }
 
+  
+
   if (token) {
-    const [userId, role] = token.split(":");
-    console.log(userId, role);
+    const role = token.split(":")[1];
 
 
     // Redirect non-admins from admin routes
@@ -36,7 +40,10 @@ export async function middleware(req: NextRequest) {
 
   return NextResponse.next();
 }
-
+// Middleware configuration
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)"],
 };
+
+
+
